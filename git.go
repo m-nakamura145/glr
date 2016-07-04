@@ -39,3 +39,16 @@ func IsLatest(localId, remoteId string) bool {
 	}
 	return localId == remoteId
 }
+
+func GitPull() string {
+	cmd := exec.Command("git", "pull")
+	cmd.Stderr = os.Stderr
+
+	merged, err := cmd.Output()
+
+	if err != nil {
+		return "", err
+	}
+
+	return string(merged), nil
+}
