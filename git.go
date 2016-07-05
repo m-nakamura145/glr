@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -39,15 +40,31 @@ func IsLatest(localId, remoteId string) bool {
 	return localId == remoteId
 }
 
-func GitPull() (string, error) {
+func GitPull() string {
 	cmd := exec.Command("git", "pull")
 	cmd.Stderr = os.Stderr
 
-	merged, err := cmd.Output()
+	merged, _ := cmd.Output()
 
+	return string(merged)
+}
+
+func SyncRepository() (string, error) {
+	localId, err := LocalHeadCommitId()
 	if err != nil {
+		fmt.Println(err)
 		return "", err
 	}
 
-	return string(merged), nil
+	remoteId, err := RemoteHeadCommitId()
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
+	if IsLatest(localId, remoteId) {
+		return "", nil
+	}
+
+	return GitPull(), nil
 }

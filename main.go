@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/mitchellh/cli"
 	"os"
-	"fmt"
 )
 
 var Version string = "0.1.0"
@@ -15,6 +15,12 @@ func main() {
 	c.Commands = map[string]cli.CommandFactory{
 		"sync": func() (cli.Command, error) {
 			return &Sync{}, nil
+		},
+		"status start": func() (cli.Command, error) {
+			return &StatusStart{}, nil
+		},
+		"status stop": func() (cli.Command, error) {
+			return &StatusStop{}, nil
 		},
 	}
 
