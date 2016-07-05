@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -40,7 +39,7 @@ func IsLatest(localId, remoteId string) bool {
 	return localId == remoteId
 }
 
-func GitPull() string {
+func GitPull() (string, error) {
 	cmd := exec.Command("git", "pull")
 	cmd.Stderr = os.Stderr
 
